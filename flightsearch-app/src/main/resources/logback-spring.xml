@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2022 Lufthansa Group Digital Hangar. All rights reserved.
+
+    This software is the confidential and proprietary information of Lufthansa Group Digital Hangar.
+
+-->
+<configuration>
+	<!-- Source with spring defaults and CONSOLE_LOG_PATTERN -->
+	<!-- https://github.com/spring-projects/spring-boot/blob/2.7.x/spring-boot-project/spring-boot/src/main/resources/org/springframework/boot/logging/logback/defaults.xml -->
+	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+	<springProperty scope="context" name="springAppName" source="spring.application.name"/>
+	<springProperty scope="context" name="serverName" source="HOSTNAME"/>
+
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
+			<charset>utf8</charset>
+		</encoder>
+	</appender>
+
+	<appender name="CLOUD_JSON" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+			<providers>
+				<pattern>
+					<!-- Below pattern produces JSON logs in a format expected by DigitalHangar monitoring -->
+					<pattern>
+						{
+						"timestamp": "%date{\"yyyy-MM-dd'T'HH:mm:ss.SSSXXX\", UTC}",
+						"trackingId": "%X{traceId:-}",
+						"spanId": "%X{spanId:-}",
+						"logLevel": "%level",
+						"context": "%logger{0}",
+						"serviceName": "${springAppName:-}",
+						"appName": "digital-hangar",
+						"serverName": "${serverName:-${HOSTNAME}}",
+						"payload": "%m %exception"
+						}
+					</pattern>
+				</pattern>
+
+				<!-- https://github.com/logstash/logstash-logback-encoder/tree/logstash-logback-encoder-6.2#event-specific-custom-fields -->
+				<provider class="aero.digitalhangar.flightsearch_app.commons.logging.CustomArgumentsJsonProvider"/>
+			</providers>
+		</encoder>
+	</appender>
+
+	<springProfile name="local">
+		<root>
+			<appender-ref ref="CONSOLE"/>
+		</root>
+	</springProfile>
+
+	<springProfile name="cloud">
+		<root>
+			<appender-ref ref="CLOUD_JSON"/>
+		</root>
+	</springProfile>
+</configuration>

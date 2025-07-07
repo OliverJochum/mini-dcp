@@ -1,0 +1,39 @@
+{
+  "properties": [
+    {
+      "name": "spring.application.environment",
+      "type": "java.lang.String",
+      "description": "AKS environment (namespace) hosting the POD."
+    },
+    {
+      "name": "spring.application.version.service",
+      "type": "java.lang.String",
+      "description": "Version of the application - 'implementation' / runtime."
+    },
+    {
+      "name": "spring.cloud.discovery.reactive.enabled",
+      "type": "java.lang.String",
+      "description": "Disabling 'service discovery' for reactive clients - using DNS from AKS."
+    },
+    {
+      "name": "external.services.common.timeout.connect",
+      "type": "java.lang.String",
+      "description": "Value in milliseconds setting a connection timeout when calling external API."
+    },
+    {
+      "name": "external.services.common.timeout.read",
+      "type": "java.lang.String",
+      "description": "Value in milliseconds setting a read timeout when calling external API."
+    },
+    {
+      "name": "external.services.common.ssl.keystore-location",
+      "type": "java.lang.String",
+      "description": "Location to key store where base LH CA cert is stored."
+    },
+    {
+      "name": "external.services.common.ssl.keystore-password",
+      "type": "java.lang.String",
+      "description": "Password to key store where base LH CA cert is stored."
+    }
+  ]
+}

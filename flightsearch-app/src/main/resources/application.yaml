@@ -1,0 +1,151 @@
+#
+# Copyright (C) 2022 Lufthansa Group Digital Hangar. All rights reserved.
+#
+# This software is the confidential and proprietary information of Lufthansa Group Digital Hangar.
+#
+
+spring:
+    application:
+        name: onboarding-oliver
+        id: onboarding-oliver
+        environment: \${K8S_POD_NAMESPACE:unknown}
+        version:
+            service: ${version}
+    profiles:
+        active: local
+
+server:
+    servlet:
+        context-path: "/api"
+    error:
+        whitelabel:
+            enabled: false
+
+logbook:
+    format:
+        style: http
+    filter:
+        enabled: true
+    predicate:
+        exclude:
+            -   path: /api/info
+            -   path: /api/swagger**
+
+springdoc:
+    api-docs:
+        path: "/swagger"
+    swagger-ui:
+        display-request-duration: true
+    paths-to-exclude: /error
+    default-produces-media-type: application/json
+
+management:
+    endpoints:
+        web:
+            exposure:
+                include: "*"
+            base-path: "/"
+        jmx:
+            exposure:
+                exclude: "*"
+    endpoint:
+        health:
+            show-details: always
+            probes:
+                enabled: true
+    health:
+        diskspace:
+            enabled: false
+    httpexchanges:
+        recording:
+            enabled: false
+    prometheus:
+        metrics:
+            export:
+                enabled: true
+                descriptions: false
+    jmx:
+        metrics:
+            export:
+                enabled: false
+
+external:
+    services:
+        common:
+            timeout:
+                connect: 2000 # 2 seconds, global constraint for WebClient's Netty http client
+                read: 5000 # 5 seconds, global constraint for WebClient's Netty http client
+            ssl:
+                keystore-location: config/lh-root-truststore.jks
+                keystore-password: dummy-password # file and password should be overridden during deployment
+
+---
+
+spring:
+    config:
+        activate:
+            on-profile: local
+
+server:
+    port: 5100
+management:
+    server:
+        port: 9100
+logging:
+    level:
+        root: info
+        org.zalando.logbook: trace
+        aero.digitalhangar.flightsearch_app: debug
+    include-application-name: false
+
+---
+
+spring:
+    config:
+        activate:
+            on-profile: cloud
+
+server:
+    port: 5100
+    shutdown: graceful
+
+management:
+    endpoints:
+        web:
+            exposure:
+                include: [ "loggers", "prometheus", "health" ]
+            base-path: "/"
+        jmx:
+            exposure:
+                exclude: "*"
+        enabled-by-default: false
+    server:
+        port: 9100
+    endpoint:
+        prometheus:
+            enabled: true
+        loggers:
+            enabled: true
+        health:
+            enabled: true
+            show-details: always
+            probes:
+                enabled: true
+    health:
+        diskspace:
+            enabled: false
+    prometheus:
+        metrics:
+            export:
+                enabled: true
+                descriptions: false
+    jmx:
+        metrics:
+            export:
+                enabled: false
+
+logging:
+    level:
+        root: warn
+        org.zalando.logbook: trace
+        aero.digitalhangar.flightsearch_app: info

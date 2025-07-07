@@ -1,0 +1,157 @@
+/*
+ * Copyright (C) 2022 Lufthansa Group Digital Hangar. All rights reserved.
+ *
+ * This software is the confidential and proprietary information of Lufthansa Group Digital Hangar.
+ */
+
+plugins {
+    id 'java-library'
+    id 'jvm-test-suite'
+    id "jacoco"
+    id 'org.springframework.boot' version "$springBootVersion"
+    id 'io.spring.dependency-management' version "$springDependencyManagementVersion"
+    id "org.springdoc.openapi-gradle-plugin" version "$openapiGradlePluginVersion"
+    id "com.diffplug.spotless" version "$spotlessVersion"
+    id "com.gorylenko.gradle-git-properties" version "$gradleGitPropertiesVersion"
+    id "io.freefair.lombok" version "$lombokVersion"
+    id "org.openrewrite.rewrite" version "$rewriteVersion"
+    id "com.github.hierynomus.license" version "$licenseVersion"
+    id "org.sonarqube" version "$sonarqubeVersion"
+}
+
+repositories {
+    gradlePluginPortal()
+}
+
+group = 'aero.digitalhangar.flightsearch_app'
+version = '0.0.1-SNAPSHOT'
+description = 'api-template-java-spring'
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
+// use testImplementation dependencies for integrationTest task
+configurations {
+    integrationTestImplementation.extendsFrom testImplementation
+}
+
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation("org.springframework.boot:spring-boot-starter-validation") {
+        // exclusions below aim to reduce unnecessary dependencies and resolve convergence problems
+        exclude group: "org.jboss.logging", module: "jboss-logging-processor"
+        exclude group: "org.jboss.logging", module: "jboss-logging-annotations"
+    }
+
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation "io.micrometer:micrometer-tracing"
+    implementation "io.micrometer:micrometer-tracing-bridge-otel"
+    runtimeOnly "io.micrometer:micrometer-registry-prometheus"
+
+    implementation("org.zalando:logbook-spring-boot-starter:$logbookSpringBootStarterVersion") {
+        // exclusions resolve conflict issues
+        exclude group: 'org.zalando', module: 'logbook-httpclient'
+        exclude group: 'org.apiguardian', module: 'apiguardian-api'
+    }
+    implementation "net.logstash.logback:logstash-logback-encoder:$logstashLogbackEncoderVersion"
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:$springdocOpenapiUiVersion"
+    implementation "org.apache.commons:commons-lang3:$commonsLang3Version"
+    implementation "org.apache.httpcomponents.client5:httpclient5:$httpclientVersion"
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+}
+
+// makes properties (version etc) accessible in application.yaml
+processResources {
+    filesMatching('**/application.yaml') {
+        expand(project.properties)
+    }
+}
+
+license {
+    header = file('LICENSE.txt')
+    mapping {
+        java = 'SLASHSTAR_STYLE'
+    }
+    excludes(["**/*.yaml", "**/*.xml", "**/*.json", "**/*.ico", "**/*.MockMaker"])
+    ext.year = '2022'
+}
+
+testing {
+    //noinspection GroovyAssignabilityCheck
+    suites {
+        test {
+            useJUnitJupiter(dependencyManagement.importedProperties['junit-jupiter.version'])
+
+            targets {
+                all {
+                    testTask.configure {
+                        // Set maxParallelForks to half of the available processors
+                        maxParallelForks = Math.max(1d, Runtime.runtime.availableProcessors() / 2)
+
+                        finalizedBy jacocoTestReport
+                    }
+                }
+            }
+        }
+    }
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        html.required = true
+        xml.required = true
+        csv.required = false
+    }
+}
+
+check {
+    dependsOn jacocoTestReport
+}
+
+openApi {
+    apiDocsUrl.set("http://localhost:5100/api/swagger")
+    outputDir.set(file("build/springdoc"))
+    outputFileName.set("openapi.json")
+}
+
+gitProperties {
+    dotGitDirectory = new File(projectDir, "../.git")
+    keys = ['git.branch', 'git.commit.id']
+}
+
+spotless {
+    java {
+        importOrder()
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+
+        prettier(['prettier': '2.8.8', 'prettier-plugin-java': '2.2.0'])
+                .config(['parser': 'java', 'printWidth': 120, 'tabWidth': 4, 'useTabs': false, 'fail': true])
+    }
+}
+
+rewrite {
+    activeRecipe(
+            "aero.digitalhangar.ChangePackageName",
+            "aero.digitalhangar.ChangeApplicationYamlValues",
+            "aero.digitalhangar.ChangeTagAttribute",
+            "aero.digitalhangar.ChangeLog4brainsConfig",
+            "aero.digitalhangar.ChangeGradleProjectName",
+            "aero.digitalhangar.ChangeCheckmarxValues",
+            "aero.digitalhangar.ChangeServiceNameInPipeline",
+            "aero.digitalhangar.ChangeProjectNameInPipeline"
+    )
+    configFile = project.getRootProject().file("setup/rewrite.yml")
+}
+
+configurations.configureEach {
+    resolutionStrategy {
+        failOnVersionConflict()
+    }
+}
