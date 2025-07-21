@@ -35,3 +35,17 @@ Docker allows me to containerize my application. The manual barebones way of doi
 
 3. Start the container from an image with `docker run tagname:version`
 3a. For some reason I need to specify the -p flag for localhost:5100 to run as expected: `docker run -p 5100:5100 flightsearch-app:latest`
+
+## Kubernetes
+To create a local kubernetes cluster and load my docker image in I use kind (kubernetes in Docker). In my gitops folder I've created a flightsearch-app.yaml that sets up a Pod which contains the docker image that should be loaded into it. The imagePullPolicy is set to never because using the latest tag will mean kind will try to pull the image from a container registry. Because the image is local I am currently manually loading it in and don't want it pulled from docker.io. 
+
+The yaml also defines a Service, which allows me to expose the demo app. The current workflow is as follows:
+
+1. Create cluster using `kind create cluster`
+2. Write manifest file `flightsearch-app.yaml` to define Pod & Service (necessary for correct image and to expose container port)
+3. Load docker image into cluster with `kind load docker-image flightsearch-app:latest` <- without this kind won't find the local image
+4. Apply manifest file to cluster using `kubectl apply -f flightsearch-app.yaml` 
+5. Port forward Service port to locahost `kubectl port-forward service/flightsearch-app-service 5100:80`
+
+# Architecture
+![alt text](https://courses.edx.org/asset-v1%3ALinuxFoundationX%2BLFS158x%2B1T2024%2Btype%40asset%2Bblock/TrainingImage.png)

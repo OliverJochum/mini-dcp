@@ -1,0 +1,26 @@
+kind: Pod 
+apiVersion: v1
+metadata:
+  name: flightsearch-app
+  labels:
+    app: flightsearch-app
+spec:
+  containers:
+    - name: flightsearch-app
+      image: flightsearch-app:latest
+      imagePullPolicy: Never
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: flightsearch-app-service
+  labels:
+    app: flightsearch-app
+spec:
+  selector:
+    app: flightsearch-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5100
