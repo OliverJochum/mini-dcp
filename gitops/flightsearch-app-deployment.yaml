@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flightsearch-app-deployment
+  labels:
+    app: flightsearch-app
+spec:
+  containers:
+    - name: flightsearch-app
+      image: flightsearch-app:latest
+      imagePullPolicy: Never
+      ports:
+        - containerPort: 5100
