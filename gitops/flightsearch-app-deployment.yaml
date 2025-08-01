@@ -5,9 +5,18 @@ metadata:
   labels:
     app: flightsearch-app
 spec:
-  containers:
-    - name: flightsearch-app
-      image: flightsearch-app:latest
-      imagePullPolicy: Never
-      ports:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flightsearch-app
+  template:
+    metadata:
+      labels:
+        app: flightsearch-app
+    spec:
+      containers:
+        - name: flightsearch-app
+          image: flightsearch-app:latest
+          imagePullPolicy: Never
+          ports:
         - containerPort: 5100
