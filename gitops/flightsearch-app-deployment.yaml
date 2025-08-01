@@ -19,4 +19,4 @@ spec:
           image: flightsearch-app:latest
           imagePullPolicy: Never
           ports:
-        - containerPort: 5100
+          - containerPort: 5100
