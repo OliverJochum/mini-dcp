@@ -16,7 +16,6 @@ spec:
     spec:
       containers:
         - name: flightsearch-app
-          image: flightsearch-app:latest
-          imagePullPolicy: Never
+          image: oliverjochum/flightsearch-app
           ports:
           - containerPort: 5100

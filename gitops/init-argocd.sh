@@ -3,7 +3,6 @@ kind delete cluster --name mini-dcp
 printf "Initializing ArgoCD...\n"
 printf "Creating mini-dcp cluster...\n"
 kind create cluster --name mini-dcp --config gitops/portmappings.yaml
-kind load docker-image flightsearch-app:latest --name mini-dcp
 
 printf "Installing ArgoCD..."
 kubectl create namespace argocd
