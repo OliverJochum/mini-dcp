@@ -11,3 +11,6 @@ spec:
     path: gitops
     repoURL: https://github.com/OliverJochum/mini-dcp.git
     targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
