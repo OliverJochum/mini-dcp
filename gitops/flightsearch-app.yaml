@@ -10,4 +10,4 @@ spec:
   source:
     path: gitops
     repoURL: https://github.com/OliverJochum/mini-dcp.git
-    targetRevision: main
+    targetRevision: HEAD
