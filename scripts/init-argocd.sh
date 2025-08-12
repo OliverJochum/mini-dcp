@@ -15,9 +15,6 @@ while [[ $(kubectl get pods -n argocd -o jsonpath='{.items[0].status.phase}') !=
 done
 kubectl port-forward svc/argocd-server -n argocd 8080:443 &
 
-argocd admin initial-password -n argocd
-argocd login localhost:8080 --insecure --username admin --password $(kubectl get secret -n argocd argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+printf "Creating flightsearch-app from manifest file...\n"
 kubectl config set-context --current --namespace=argocd
-argocd repo add https://github.com/OliverJochum/mini-dcp.git
-argocd app create flightsearch-app --repo https://github.com/OliverJochum/mini-dcp.git --path gitops --dest-server https://kubernetes.default.svc --dest-namespace default
-
+kubectl apply -f https://raw.githubusercontent.com/OliverJochum/mini-dcp/main/gitops/flightsearch-app.yaml

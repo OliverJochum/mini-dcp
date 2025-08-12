@@ -1,0 +1,13 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: flightsearch-app
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: gitops
+    repoURL: https://github.com/OliverJochum/mini-dcp.git
+    targetRevision: main
