@@ -9,7 +9,8 @@ kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
 printf "port-forwarding ArgoCD to localhost:8080\n"
-while [[ $(kubectl get pods -n argocd -o jsonpath='{.items[0].status.phase}') != "Running" ]]; do
+
+while [[ $(kubectl get pods -n argocd -l "app.kubernetes.io/name=argocd-server" -o jsonpath='{.items[0].status.phase}') != "Running" ]]; do
   echo "⏳ Waiting for pod to be Running..."
   sleep 2
 done
