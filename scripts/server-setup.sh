@@ -61,14 +61,14 @@ watch kubectl get pods -n calico-system &
 printf "Removing taint from control-plane node...\n"
 kubectl taint nodes --all node-role.kubernetes.io/control-plane-
 
+printf "Installing ArgoCD...\n"
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
 printf "Installing ArgoCD CLI...\n"
 curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
 sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
 rm argocd-linux-amd64
-
-printf "Installing ArgoCD...\n"
-kubectl create namespace argocd
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
 printf "Create NodePort service for ArgoCD...\n"
 kubectl apply -f https://raw.githubusercontent.com/OliverJochum/mini-dcp/main/argo-config/argocd-nodeport-svc.yaml
