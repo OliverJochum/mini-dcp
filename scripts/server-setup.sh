@@ -71,7 +71,7 @@ kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
 printf "Create NodePort service for ArgoCD...\n"
-kubectl apply -f https://raw.githubusercontent.com/OliverJochum/mini-dcp/main/gitops/argocd-nodeport-svc.yaml
+kubectl apply -f https://raw.githubusercontent.com/OliverJochum/mini-dcp/main/argo-config/argocd-nodeport-svc.yaml
 
 printf "Creating flightsearch-app from manifest file...\n"
 kubectl config set-context --current --namespace=argocd
