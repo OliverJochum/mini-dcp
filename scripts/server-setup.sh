@@ -34,6 +34,29 @@ echo \
   $(lsb_release -cs) stable" \
   > /etc/apt/sources.list.d/docker.list
 
+# Configure containerd
+printf "Configuring containerd...\n"
+mkdir -p /etc/containerd
+cat >/etc/containerd/config.toml <<'EOF'
+version = 2
+
+[plugins]
+  [plugins."io.containerd.grpc.v1.cri"]
+    # pause image for Kubernetes pods
+    sandbox_image = "registry.k8s.io/pause:3.10"
+    [plugins."io.containerd.grpc.v1.cri".containerd]
+      snapshotter = "overlayfs"
+      [plugins."io.containerd.grpc.v1.cri".containerd.runtimes]
+        [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+          runtime_type = "io.containerd.runc.v2"
+          [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+            SystemdCgroup = true
+EOF
+
+systemctl daemon-reload
+systemctl enable --now containerd
+systemctl restart containerd
+
 apt-get update
 apt-get install -y containerd.io
 
@@ -63,8 +86,6 @@ kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.2
 # Install calico 
 printf "Installing Calico...\n"
 kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.2/manifests/custom-resources.yaml
-
-watch kubectl get pods -n calico-system & 
 
 # Remove taint from control-plane node
 printf "Removing taint from control-plane node...\n"
