@@ -45,6 +45,9 @@ sudo kubeadm init --pod-network-cidr=192.168.0.0/16
 
 export KUBECONFIG=/etc/kubernetes/admin.conf
 
+printf "Waiting for control-plane node to be ready...\n"
+kubectl wait --for=condition=Ready node/mini-dcp-server --timeout=300s
+
 # Install tigera
 printf "Installing Tigera...\n"
 kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.2/manifests/tigera-operator.yaml
@@ -53,6 +56,7 @@ kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.2
 printf "Installing Calico...\n"
 kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.2/manifests/custom-resources.yaml
 
+printf "Waiting for Calico pods to be ready...\n"
 kubectl wait --for=condition=Ready pods --all -n calico-system --timeout=120s
 
 # Remove taint from control-plane node
