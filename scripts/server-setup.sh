@@ -43,7 +43,9 @@ sysctl net.ipv4.ip_forward
 printf "Initializing control-plane...\n"
 sudo kubeadm init --pod-network-cidr=192.168.0.0/16
 
-export KUBECONFIG=/etc/kubernetes/admin.conf
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 printf "Waiting for control-plane node to be ready...\n"
 kubectl wait --for=condition=Ready node/mini-dcp-server --timeout=300s
