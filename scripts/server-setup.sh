@@ -25,40 +25,39 @@ apt-get update
 apt-get install -y ca-certificates curl gnupg lsb-release
 
 # (Recommended) Install containerd from Docker’s repo for up-to-date builds
-install -m 0755 -d /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-chmod a+r /etc/apt/keyrings/docker.gpg
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
-  https://download.docker.com/linux/$(. /etc/os-release; echo "$ID") \
-  $(lsb_release -cs) stable" \
-  > /etc/apt/sources.list.d/docker.list
+apt-get update
+apt-get install -y containerd.io
+# install -m 0755 -d /etc/apt/keyrings
+# curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+# chmod a+r /etc/apt/keyrings/docker.gpg
+# echo \
+#   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+#   https://download.docker.com/linux/$(. /etc/os-release; echo "$ID") \
+#   $(lsb_release -cs) stable" \
+#   > /etc/apt/sources.list.d/docker.list
 
 # Configure containerd
-printf "Configuring containerd...\n"
-mkdir -p /etc/containerd
-cat >/etc/containerd/config.toml <<'EOF'
-version = 2
+# printf "Configuring containerd...\n"
+# mkdir -p /etc/containerd
+# cat >/etc/containerd/config.toml <<'EOF'
+# version = 2
 
-[plugins]
-  [plugins."io.containerd.grpc.v1.cri"]
-    # pause image for Kubernetes pods
-    sandbox_image = "registry.k8s.io/pause:3.10"
-    [plugins."io.containerd.grpc.v1.cri".containerd]
-      snapshotter = "overlayfs"
-      [plugins."io.containerd.grpc.v1.cri".containerd.runtimes]
-        [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
-          runtime_type = "io.containerd.runc.v2"
-          [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
-            SystemdCgroup = true
-EOF
+# [plugins]
+#   [plugins."io.containerd.grpc.v1.cri"]
+#     # pause image for Kubernetes pods
+#     sandbox_image = "registry.k8s.io/pause:3.10"
+#     [plugins."io.containerd.grpc.v1.cri".containerd]
+#       snapshotter = "overlayfs"
+#       [plugins."io.containerd.grpc.v1.cri".containerd.runtimes]
+#         [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+#           runtime_type = "io.containerd.runc.v2"
+#           [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+#             SystemdCgroup = true
+# EOF
 
 systemctl daemon-reload
 systemctl enable --now containerd
 systemctl restart containerd
-
-apt-get update
-apt-get install -y containerd.io
 
 # sysctl params required by setup, params persist across reboots
 cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
