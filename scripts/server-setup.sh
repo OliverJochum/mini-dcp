@@ -56,12 +56,12 @@ kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.2
 printf "Installing Calico...\n"
 kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.2/manifests/custom-resources.yaml
 
+kubectl wait --for=condition=Ready pods --all -n calico-system --timeout=120s
+
 # Remove taint from control-plane node
 printf "Removing taint from control-plane node...\n"
 kubectl taint nodes --all node-role.kubernetes.io/control-plane-
 kubectl get nodes -o wide
-
-sleep 10
 
 printf "Installing ArgoCD...\n"
 kubectl create namespace argocd
