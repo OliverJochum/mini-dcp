@@ -43,12 +43,25 @@ sysctl net.ipv4.ip_forward
 printf "Initializing control-plane...\n"
 sudo kubeadm init --pod-network-cidr=192.168.0.0/16
 
-mkdir -p $HOME/.kube
-sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-sudo chown $(id -u):$(id -g) $HOME/.kube/config
+export KUBECONFIG=/etc/kubernetes/admin.conf
+kubectl cluster-info
 
-printf "Waiting for control-plane node to be ready...\n"
-kubectl wait --for=condition=Ready node/mini-dcp-server --timeout=300s
+set -euo pipefail
+
+echo "[1/3] Waiting for node Ready…"
+kubectl wait --for=condition=Ready node/mini-dcp-server --timeout=600s
+
+echo "[2/3] Waiting for kube-system pods…"
+kubectl wait --for=condition=Ready pods --all -n kube-system --timeout=600s
+
+echo "[3/3] Waiting for Calico pods (if installed)…"
+if kubectl get ns calico-system >/dev/null 2>&1; then
+  kubectl wait --for=condition=Ready pods --all -n calico-system --timeout=600s
+else
+  echo "calico-system namespace not found (skip)"
+fi
+
+echo " Cluster is ready.\n"
 
 # Install tigera
 printf "Installing Tigera...\n"
