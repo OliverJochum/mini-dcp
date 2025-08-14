@@ -26,7 +26,7 @@ apt-get install -y ca-certificates curl gnupg lsb-release
 
 # (Recommended) Install containerd from Docker’s repo for up-to-date builds
 apt-get update
-apt-get install -y containerd.io
+sudo apt install containerd
 # install -m 0755 -d /etc/apt/keyrings
 # curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 # chmod a+r /etc/apt/keyrings/docker.gpg
