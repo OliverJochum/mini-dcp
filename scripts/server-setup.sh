@@ -23,37 +23,7 @@ sudo systemctl enable --now kubelet
 printf "Installing containerd...\n"
 apt-get update
 apt-get install -y ca-certificates curl gnupg lsb-release
-
-# (Recommended) Install containerd from Docker’s repo for up-to-date builds
-apt-get update
-sudo apt install containerd
-# install -m 0755 -d /etc/apt/keyrings
-# curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-# chmod a+r /etc/apt/keyrings/docker.gpg
-# echo \
-#   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
-#   https://download.docker.com/linux/$(. /etc/os-release; echo "$ID") \
-#   $(lsb_release -cs) stable" \
-#   > /etc/apt/sources.list.d/docker.list
-
-# Configure containerd
-# printf "Configuring containerd...\n"
-# mkdir -p /etc/containerd
-# cat >/etc/containerd/config.toml <<'EOF'
-# version = 2
-
-# [plugins]
-#   [plugins."io.containerd.grpc.v1.cri"]
-#     # pause image for Kubernetes pods
-#     sandbox_image = "registry.k8s.io/pause:3.10"
-#     [plugins."io.containerd.grpc.v1.cri".containerd]
-#       snapshotter = "overlayfs"
-#       [plugins."io.containerd.grpc.v1.cri".containerd.runtimes]
-#         [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
-#           runtime_type = "io.containerd.runc.v2"
-#           [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
-#             SystemdCgroup = true
-# EOF
+sudo apt install -y containerd
 
 systemctl daemon-reload
 systemctl enable --now containerd
@@ -89,6 +59,9 @@ kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.2
 # Remove taint from control-plane node
 printf "Removing taint from control-plane node...\n"
 kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+kubectl get nodes -o wide
+
+sleep 10
 
 printf "Installing ArgoCD...\n"
 kubectl create namespace argocd
@@ -105,5 +78,3 @@ kubectl apply -f https://raw.githubusercontent.com/OliverJochum/mini-dcp/main/ar
 printf "Creating flightsearch-app from manifest file...\n"
 kubectl config set-context --current --namespace=argocd
 kubectl apply -f https://raw.githubusercontent.com/OliverJochum/mini-dcp/main/gitops/flightsearch-app.yaml
-
-
