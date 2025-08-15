@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: flightsearch-app
-          image: docker.io/oliverjochum/flightsearch-app:0.0.1
+          image: docker.io/oliverjochum/flightsearch-app:0.0.2
           ports:
           - containerPort: 5100
