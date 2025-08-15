@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: flightsearch-app-svc
+  labels:
+    app: flightsearch-app
+spec:
+  selector:
+    app: flightsearch-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5100
+      nodePort: 31000
+  type: NodePort
