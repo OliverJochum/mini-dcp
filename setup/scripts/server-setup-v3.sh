@@ -73,8 +73,8 @@ sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
 rm argocd-linux-amd64
 
 # Create NodePort service for ArgoCD server
-kubectl apply -f https://raw.githubusercontent.com/OliverJochum/mini-dcp/main/argo-config/argocd-nodeport-svc.yaml
+kubectl apply -f https://raw.githubusercontent.com/OliverJochum/mini-dcp/main/setup/argo/argocd-nodeport-svc.yaml
 
 # create flightsearch-app
 kubectl config set-context --current --namespace=argocd
-kubectl apply -f https://raw.githubusercontent.com/OliverJochum/mini-dcp/main/gitops/flightsearch-app.yaml
+kubectl apply -f https://raw.githubusercontent.com/OliverJochum/mini-dcp/main/setup/argo/flightsearch-app.yaml
