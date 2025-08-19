@@ -62,6 +62,7 @@ kubectl taint nodes --all node-role.kubernetes.io/control-plane-
 
 # confirm control-plane node is Ready
 # kubectl get nodes -o wide
+kubectl wait --for=condition=Ready node/mini-dcp-server --timeout=600s
 
 # install ArgoCD
 kubectl create namespace argocd
