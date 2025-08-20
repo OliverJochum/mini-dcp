@@ -78,6 +78,7 @@ kubectl apply -f https://raw.githubusercontent.com/OliverJochum/mini-dcp/main/se
 
 # create flightsearch-app
 kubectl config set-context --current --namespace=argocd
+kubectl apply -f https://raw.githubusercontent.com/OliverJochum/mini-dcp/refs/heads/main/setup/argo/mini-dcp-project.yaml
 kubectl apply -f https://raw.githubusercontent.com/OliverJochum/mini-dcp/main/setup/argo/flightsearch-app.yaml
 
 # necessary if kubectl tells you it cant find localhost:8080
