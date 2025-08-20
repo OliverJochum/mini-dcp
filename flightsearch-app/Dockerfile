@@ -8,7 +8,7 @@ RUN chmod +x gradlew
 
 COPY . .
 
-COPY ../.git .git
+COPY .git .git
 
 RUN ./gradlew build --no-daemon
 
