@@ -24,7 +24,6 @@ repositories {
 }
 
 group = 'aero.digitalhangar.flightsearch_app'
-version = '0.0.1-SNAPSHOT'
 description = 'api-template-java-spring'
 
 java {
