@@ -1,12 +1,14 @@
 # Setup guide
-1. [Local run with Gradle](#local-run-with-gradle)
-2. [OpenAPI definition](#openapi-definition)
-3. [Connect to server via SSH](#connect-to-server-via-ssh)
+1. [What is the Mini-DCP?](#what-is-the-mini-dcp)
+2. [Local run with Gradle](#local-run-with-gradle)
+3. [OpenAPI definition](#openapi-definition)
+4. [Connect to server via SSH](#connect-to-server-via-ssh)
     - [Config setup](#config-setup)
-4. [Mini-DCP on server](#mini-dcp-on-server)
+5. [Mini-DCP on server](#mini-dcp-on-server)
     - [Accessing the server via NodePorts](#accessing-the-server-via-nodeports)
     - [Debugging](#debugging)
-
+### What is the Mini-DCP?
+The Mini-DCP is a demonstration of DevOps/GitOps skills learned over the course of two months while shadowing a member of LHGDH's Digital Core Platform. It is meant to be a fully automated process to setup, deploy and maintain an application. In this case the demo-application is a small Spring Boot API that mocks searching for flights. The application is deployed using ArgoCD in a Kubernetes cluster on a server
 ### Local run with Gradle
 
 ```bash
