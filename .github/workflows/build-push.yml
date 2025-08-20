@@ -6,9 +6,9 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: flightsearch-app
+    strategy:
+      matrix:
+        service: [flightsearch-app]
     steps:
       -
         name: Checkout
@@ -29,7 +29,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: ./flightsearch-app
-          file: ./flightsearch-app/Dockerfile
+          context: ./${{ matrix.service }}
+          file: ./${{ matrix.service }}/Dockerfile
           push: true
-          tags: oliverjochum/flightsearch-app:latest
+          tags: oliverjochum/${{ matrix.service }}:latest
