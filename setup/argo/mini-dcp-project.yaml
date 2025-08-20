@@ -1,0 +1,8 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: mini-dcp-project
+spec:
+  description: Mini DCP project containing hypothetical Airline APIs
+  sourceRepos:
+    - '!https://github.com/OliverJochum/mini-dcp/tree/main/flightsearch-app'
