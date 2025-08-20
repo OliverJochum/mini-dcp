@@ -1,13 +1,16 @@
 FROM eclipse-temurin:21-jdk AS builder
 WORKDIR /workspace
 COPY . .
-RUN ./gradlew build
+RUN ./gradlew build --no-daemon
 
 # get base image (jdk you're using)
 FROM docker.io/library/eclipse-temurin:21.0.3_9-jdk-alpine
 
+# set the working directory in the image
+WORKDIR /app
+
 # copy jar file into the image
-COPY build/libs/flightsearch_app.jar /flightsearch_app.jar
+COPY --from=builder /workspace/build/libs/*.jar /flightsearch_app.jar
 
 # set the executable that starts when the container boots
 ENTRYPOINT [ "java", "-jar", "/flightsearch_app.jar" ]
