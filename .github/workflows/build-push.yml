@@ -28,6 +28,11 @@ jobs:
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - 
+        name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - 
         name: Setup Gradle and Validate Wrapper
         uses: gradle/actions/setup-gradle@v4
       -
