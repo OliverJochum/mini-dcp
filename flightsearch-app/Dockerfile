@@ -6,9 +6,10 @@ COPY flightsearch-app/gradlew .
 COPY flightsearch-app/gradle gradle
 RUN chmod +x gradlew
 
+
 COPY flightsearch-app/ .
 
-RUN ./gradlew build -x generateGitProperties --no-daemon
+RUN ./gradlew build -x generateGitProperties -x spotlessCheck --no-daemon
 
 # get base image (jdk you're using)
 FROM docker.io/library/eclipse-temurin:21.0.3_9-jdk-alpine
