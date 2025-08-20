@@ -8,6 +8,8 @@ RUN chmod +x gradlew
 
 COPY . .
 
+COPY ../.git .git
+
 RUN ./gradlew build --no-daemon
 
 # get base image (jdk you're using)
