@@ -29,6 +29,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: .
+          context: ./flightsearch-app
+          file: ./flightsearch-app/Dockerfile
           push: true
           tags: oliverjochum/flightsearch-app:latest
