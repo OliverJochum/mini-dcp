@@ -4,9 +4,9 @@ metadata:
   name: flightsearch-app
 spec:
   destination:
-    namespace: default
+    namespace: dev
     server: https://kubernetes.default.svc
-  project: default
+  project: mini-dcp-project
   source:
     path: gitops
     repoURL: https://github.com/OliverJochum/mini-dcp.git

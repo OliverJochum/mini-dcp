@@ -6,3 +6,6 @@ spec:
   description: Mini DCP project containing hypothetical Airline APIs
   sourceRepos:
     - '!https://github.com/OliverJochum/mini-dcp/tree/main/flightsearch-app'
+  destinations:
+    - namespace: dev
+      server: https://kubernetes.default.svc
