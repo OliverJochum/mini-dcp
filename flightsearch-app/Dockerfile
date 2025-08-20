@@ -1,6 +1,13 @@
 FROM eclipse-temurin:21-jdk AS builder
 WORKDIR /workspace
+
+# Copy Gradle wrapper first, then give it execute permissions
+COPY gradlew .
+COPY gradle gradle
+RUN chmod +x gradlew
+
 COPY . .
+
 RUN ./gradlew build --no-daemon
 
 # get base image (jdk you're using)
