@@ -2,11 +2,11 @@ FROM eclipse-temurin:21-jdk AS builder
 WORKDIR /workspace
 
 # Copy Gradle wrapper first, then give it execute permissions
-COPY gradlew .
-COPY gradle gradle
+COPY flightsearch-app/gradlew .
+COPY flightsearch-app/gradle gradle
 RUN chmod +x gradlew
 
-COPY . .
+COPY flightsearch-app/ .
 
 COPY .git .git
 
