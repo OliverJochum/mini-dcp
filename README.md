@@ -1,3 +1,12 @@
+# Setup guide
+1. [Local run with Gradle](#local-run-with-gradle)
+2. [OpenAPI definition](#openapi-definition)
+3. [Connect to server via SSH](#connect-to-server-via-ssh)
+    - [Config setup](#config-setup)
+4. [Mini-DCP on server](#mini-dcp-on-server)
+    - [Accessing the server via NodePorts](#accessing-the-server-via-nodeports)
+    - [Debugging](#debugging)
+
 ### Local run with Gradle
 
 ```bash
@@ -6,6 +15,9 @@
 
 # development
 ./gradlew bootRun
+
+# testing
+./gradlew test
 ```
 
 ### OpenAPI definition
