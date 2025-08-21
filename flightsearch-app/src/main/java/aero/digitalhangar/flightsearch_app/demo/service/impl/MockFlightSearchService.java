@@ -461,7 +461,7 @@ public class MockFlightSearchService implements FlightSearchService {
                 FlightType.DIRECT,
                 new FlightItem[] {}
             ),
-             new FlightItem(
+            new FlightItem(
                 "FL1206",
                 "2025-01-06T05:00:00Z",
                 "2025-01-06T09:00:00Z",
