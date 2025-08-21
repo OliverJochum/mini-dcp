@@ -9,6 +9,9 @@ jobs:
     strategy:
       matrix:
         service: [flightsearch-app]
+    defaults:
+      run:
+        working-directory: ./${{ matrix.service }}
     steps:
      - name: Checkout Code
        uses: actions/checkout@v2
