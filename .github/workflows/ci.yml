@@ -24,6 +24,7 @@ jobs:
      - name: Run tests
        run: ./gradlew test
   build-and-push:
+    needs: test
     runs-on: ubuntu-latest
     strategy:
       matrix:
