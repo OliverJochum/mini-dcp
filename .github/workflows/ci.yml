@@ -13,19 +13,19 @@ jobs:
       run:
         working-directory: ./${{ matrix.service }}
     steps:
-     - name: Checkout Code
-       uses: actions/checkout@v2
-     - name: Setup Java
-       uses: actions/setup-java@v4
-       with:
-         distribution: 'temurin'
-         java-version: 21
-     - name: Setup Gradle and Validate Wrapper
-       uses: gradle/actions/setup-gradle@v4
-     - name: Install & Build
-       run: ./gradlew clean build
-     - name: Run tests
-       run: ./gradlew test
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 21
+      - name: Setup Gradle and Validate Wrapper
+        uses: gradle/actions/setup-gradle@v4
+      - name: Install & Build
+        run: ./gradlew clean build
+      - name: Run tests
+        run: ./gradlew test
   build-and-push:
     needs: test
     runs-on: ubuntu-latest
