@@ -461,6 +461,19 @@ public class MockFlightSearchService implements FlightSearchService {
                 FlightType.DIRECT,
                 new FlightItem[] {}
             ),
+             new FlightItem(
+                "FL1206",
+                "2025-01-06T05:00:00Z",
+                "2025-01-06T09:00:00Z",
+                "MSP",
+                "JFK",
+                "AA",
+                45000,
+                "USD",
+                FareClass.P,
+                FlightType.DIRECT,
+                new FlightItem[] {}
+            ),
             new FlightItem(
                 "FL1007",
                 "2025-01-06T06:00:00Z",
