@@ -449,7 +449,7 @@ public class MockFlightSearchService implements FlightSearchService {
                 new FlightItem[] {}
             ),
             new FlightItem(
-                "FL1006",
+                "FL2006",
                 "2025-01-06T05:00:00Z",
                 "2025-01-06T09:00:00Z",
                 "LAX",
