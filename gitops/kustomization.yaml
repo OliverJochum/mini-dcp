@@ -1,5 +1,7 @@
 resources:
   - ./resources/flightsearch-app-deployment.yaml
+  - ./resources/flightsearch-app-np-svc.yaml
+  - ./resources/flightsearch-app-svc.yaml
 
 namespace: dev
 
