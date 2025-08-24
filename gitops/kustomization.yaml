@@ -1,0 +1,9 @@
+resources:
+  - ./resources/flightsearch-app-deployment.yaml
+
+namespace: dev
+
+images:
+  - name: flightsearch-app
+    newName: docker.io/oliverjochum/flightsearch-app
+    newTag: test
