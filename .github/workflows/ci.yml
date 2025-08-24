@@ -87,7 +87,7 @@ jobs:
       - name: Patch kustomization.yaml with new image tag
         run: |
           cd gitops
-          sed -i "s|newTag: .*|newTag: ${{ github.run_id }}.${{ github.run_attempt }}|g" kustomization.yaml
+          sed -i "s|newTag: .*|newTag: '${{ github.run_id }}.${{ github.run_attempt }}'|g" kustomization.yaml
       - name: Commit and Push changes
         run: |
           git config --global user.name "github-actions[bot]"
