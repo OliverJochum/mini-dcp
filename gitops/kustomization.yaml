@@ -7,4 +7,4 @@ namespace: dev
 
 images:
   - name: docker.io/oliverjochum/flightsearch-app
-    newTag: "17192050752.1"
+    newTag: '17192391401.1'
