@@ -6,4 +6,4 @@ namespace: dev
 images:
   - name: flightsearch-app
     newName: docker.io/oliverjochum/flightsearch-app
-    newTag: test
+    newTag: 17192050752.1
