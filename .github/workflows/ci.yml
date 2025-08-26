@@ -83,6 +83,9 @@ jobs:
   patch-deployment:
     needs: build-and-push
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [flightsearch-app]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
