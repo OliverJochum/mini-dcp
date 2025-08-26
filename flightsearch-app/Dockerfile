@@ -6,6 +6,7 @@ COPY flightsearch-app/gradlew .
 COPY flightsearch-app/gradle gradle
 RUN chmod +x gradlew
 
+COPY .git ../.git
 
 COPY flightsearch-app/ .
 
