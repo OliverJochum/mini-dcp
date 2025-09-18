@@ -8,9 +8,10 @@ spec:
     server: https://kubernetes.default.svc
   project: mini-dcp-project
   source:
-    path: gitops/resources
+    path: gitops
     repoURL: https://github.com/OliverJochum/mini-dcp.git
     targetRevision: HEAD
+    kustomize: {}
   syncPolicy:
     automated:
       prune: true
