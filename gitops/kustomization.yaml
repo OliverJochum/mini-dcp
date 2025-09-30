@@ -8,6 +8,6 @@ namespace: dev
 images:
 - name: docker.io/oliverjochum/flightsearch-app
   newName: oliverjochum/flightsearch-app
-  newTag: "17295873392.1"
+  newTag: "18114091457.1"
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
