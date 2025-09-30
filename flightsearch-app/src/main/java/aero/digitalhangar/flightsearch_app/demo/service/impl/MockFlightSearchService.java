@@ -76,7 +76,7 @@ public class MockFlightSearchService implements FlightSearchService {
                 FlightType.SEGMENTED,
                 new FlightItem[] {
                     new FlightItem(
-                        "LH7500-C1",
+                        "LH7600-C1",
                         "2025-01-01T11:00:00Z",
                         "2025-01-01T12:00:00Z",
                         "FRA",
