@@ -8,7 +8,7 @@
     - [Accessing the server via NodePorts](#accessing-the-server-via-nodeports)
     - [Debugging](#debugging)
 ### What is the Mini-DCP?
-The Mini-DCP is a demonstration of DevOps/GitOps skills learned over the course of two months while shadowing a member of LHGDH's Digital Core Platform. It is meant to be a fully automated process to setup, deploy and maintain an application. In this case the demo-application is a small Spring Boot API that mocks searching for flights. The application is deployed using ArgoCD in a Kubernetes cluster on a server
+The Mini-DCP is a demonstration of DevOps/GitOps skills learned over the course of two months while shadowing a member of LHGDH's Digital Core Platform. It is meant to be a fully automated process to setup, deploy and maintain an application. In this case the demo-application is a small Spring Boot API that mocks searching for flights. The application is deployed using ArgoCD in a Kubernetes cluster on a Hetzner server. See Wiki for more detailed information.
 ### Local run with Gradle
 
 ```bash
